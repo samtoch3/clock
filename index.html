@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clock</title>
+    <link rel="icon" type="image/png" href="clock.png">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Pacifico&family=Patrick+Hand&family=Poppins:wght@200&family=Roboto:ital,wght@0,300;1,300&family=Tangerine&display=swap");
+        body {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+            color: white;
+            background: url("https://media2.giphy.com/media/TxVVB6PfWMjE4/giphy.gif?cid=ecf05e478n6m9tq8b8xm6uphxbjcl8aqzyl1791vax2x6p1u&rid=giphy.gif&ct=g") center center fixed;
+            overflow-y: hidden;
+        }
+        
+        #year,
+        #day,
+        #month {
+            position: absolute;
+        }
+        
+        #day {
+            animation-name: slideDay;
+            animation-timing-function: ease-in;
+            animation-duration: 500ms;
+            animation-delay: 1s;
+            font-size: 20px;
+            left: 15px;
+            top: -15px;
+        }
+        
+        @keyframes slideDay {
+            0% {
+                transform: translateX(-200px);
+            }
+            50% {
+                transform: translateX(0px);
+            }
+        }
+        
+        #month,
+        #year {
+            top: 196px;
+            right: 82px;
+        }
+        
+        #year {
+            right: 27px;
+        }
+        
+        #year {
+            animation-name: slide;
+            animation-timing-function: ease-in;
+            animation-duration: 500ms;
+            animation-delay: 1s;
+        }
+        
+        @keyframes slide {
+            0% {
+                transform: translateX(200px);
+            }
+            50% {
+                transform: translateX(0px);
+            }
+        }
+        
+        #clockBox {
+            width: 85vw;
+            height: 40vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(0px) saturate(174%);
+            -webkit-backdrop-filter: blur(0px) saturate(174%);
+            background-color: rgba(255, 255, 255, 0.22);
+            border-radius: 9px;
+            border: 1px solid rgba(209, 213, 219, 0.3);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        h1 {
+            font-size: 35px;
+        }
+        
+        .moon {
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            top: 12%;
+            left: 68%;
+            background-color: rgb(211, 211, 211);
+            border-radius: 100px;
+        }
+        
+        #year {
+            animation-name: slide;
+            animation-timing-function: ease-in;
+            animation-duration: 500ms;
+            animation-delay: 1s;
+        }
+        
+        @keyframes slide {
+            0% {
+                transform: translateX(200px);
+            }
+            50% {
+                transform: translateX(0px);
+            }
+        }
+        
+        #Astro {
+            width: 70px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            animation-name: float;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+            animation-duration: 15s;
+            animation-delay: 1s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: rotateZ(360deg);
+            }
+            100% {
+                transform: rotateZ(0px);
+            }
+        }
+        
+        #Rocket {
+            width: 40px;
+            position: absolute;
+            top: -10%;
+            left: 91%;
+            z-index: 10;
+            animation-name: Takeoff;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+            animation-duration: 30s;
+            animation-delay: 1s;
+        }
+        
+        @keyframes Takeoff {
+            0% {
+                transform: translatey(800px);
+            }
+            100% {
+                transform: translatey(0px);
+                opacity: 0;
+            }
+        }
+        
+        @media (min-width: 640px) {
+            #clockBox {
+                max-width: 480px;
+            }
+        }
+    </style>>
+</head>
+
+<body>
+    <div class="moon"></div>
+    <div id="clockBox">
+        <h1 id="time"></h1>
+        <h3 id="year"></h3>
+        <h3 id="day"></h3>
+        <h3 id="month"></h3>
+    </div>
+    <img id="Astro" src="ast.png" alt="" />
+    <img id="Rocket" src="fus.png" alt="" />
+    <audio src="clock-ticking-2.mp3"></audio>
+    <script>
+        let timeContainer = document.getElementById("time");
+        let theYear = document.getElementById("year");
+        let theDay = document.getElementById("day");
+        let theMonth = document.getElementById("month");
+        let audio = new Audio("https://www.soundjay.com/clock/clock-ticking-2.mp3");
+        const startTime = () => {
+            let time = new Date();
+            let hr = time.getHours();
+            let min = time.getMinutes();
+            let sec = time.getSeconds();
+            let year = time.getFullYear();
+            let day = time.getDay();
+            let month = time.getMonth();
+            let date = time.getDate();
+            let meridian = "AM";
+            if (hr > 12) {
+                hr = hr - 12;
+                meridian = "PM";
+            }
+            if (hr === 0) {
+                hr = "0" + hr;
+            }
+            if (min < 10) {
+                min = "0" + min;
+            }
+            if (sec < 10) {
+                sec = "0" + sec;
+            }
+            // days starts from 0 in js
+            if (day === 0) {
+                day = "Sunday";
+            } else if (day === 1) {
+                day = "Monday";
+            } else if (day === 2) {
+                day = "Tuesday";
+            } else if (day === 3) {
+                day = "Wednesday";
+            } else if (day === 4) {
+                day = "Thursday";
+            } else if (day === 5) {
+                day = "Friday";
+            } else if (day === 6) {
+                day = "Saturday";
+            }
+            // months starts from 0 in js
+            if (month === 0) {
+                month = "Jan";
+            } else if (month === 1) {
+                month = "Feb";
+            } else if (month === 2) {
+                month = "March";
+            } else if (month === 3) {
+                month = "April";
+            } else if (month === 4) {
+                month = "May";
+            } else if (month === 5) {
+                month = "June";
+            } else if (month === 6) {
+                month = "July";
+            } else if (month === 7) {
+                month = "Aug";
+            } else if (month === 8) {
+                month = "Sep";
+            } else if (month === 9) {
+                month = "Oct";
+            } else if (month === 10) {
+                month = "Nov";
+            } else if (month === 11) {
+                month = "Dec";
+            }
+            timeContainer.innerText = `${hr} : ${min} : ${sec} : ${meridian}`;
+            theYear.innerText = year;
+            theDay.innerHTML = day;
+            theMonth.innerHTML = `${date}, ${month}`;
+            audio.play();
+        };
+        setInterval(startTime, 1000);
+    </script>
+</body>
+
+</html>
